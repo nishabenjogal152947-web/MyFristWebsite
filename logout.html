@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Logout - Food Ordering</title>
+
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #fff5f2;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logout-container {
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+        }
+
+        .logout-card {
+            background: #ffffff;
+            padding: 45px 35px;
+            border-radius: 18px;
+            text-align: center;
+
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+        }
+
+        /* Logo */
+        .logo {
+            color: #ff6b35;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+        }
+
+        /* Logout Icon */
+        .logout-icon {
+            width: 90px;
+            height: 90px;
+
+            margin: 0 auto 25px;
+
+            border-radius: 50%;
+
+            background: #fff0eb;
+            color: #ff6b35;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 38px;
+        }
+
+        /* Heading */
+        h1 {
+            color: #222;
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+
+        /* Description */
+        .message {
+            color: #777;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            flex: 1;
+
+            padding: 13px 20px;
+
+            border: none;
+            border-radius: 8px;
+
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 500;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+
+            transition: 0.3s;
+        }
+
+        /* Cancel */
+        .cancel-btn {
+            background: #eeeeee;
+            color: #444;
+        }
+
+        .cancel-btn:hover {
+            background: #dddddd;
+        }
+
+        /* Logout */
+        .logout-btn {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .logout-btn:hover {
+            background: #e85b2d;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 25px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        /* Mobile */
+        @media (max-width: 500px) {
+
+            .logout-card {
+                padding: 35px 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="logout-container">
+
+        <div class="logout-card">
+
+            <!-- FOOD ORDERING -->
+            <div class="logo">
+                FOOD ORDERING
+            </div>
+
+            <!-- Icon -->
+            <div class="logout-icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </div>
+
+            <!-- Title -->
+            <h1>Logout</h1>
+
+            <!-- Message -->
+            <p class="message">
+                Are you sure you want to logout from the
+                <strong>Food Ordering Admin Panel</strong>?
+            </p>
+
+            <!-- Buttons -->
+            <div class="buttons">
+
+                <!-- Cancel -->
+                <a href="dashboard.html" class="btn cancel-btn">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    Cancel
+                </a>
+
+                <!-- Logout -->
+                <button type="button"
+                        class="btn logout-btn"
+                        onclick="logoutUser()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+
+            </div>
+
+            <div class="footer">
+                Food Ordering Admin Panel
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        function logoutUser() {
+
+            // Clear browser session data
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // Show logout message
+            alert("You have been successfully logged out.");
+
+            // Return to dashboard
+            window.location.href = "dashboard.html";
+        }
+    </script>
+
+</body>
+</html>

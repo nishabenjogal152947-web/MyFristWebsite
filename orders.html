@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders Management - Food Ordering</title>
+
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        :root {
+            --primary: #ff6b35;
+            --secondary: #ff8c42;
+            --light: #fff5f2;
+            --white: #ffffff;
+            --dark: #333333;
+            --border: #dddddd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        /* ================= MAIN CONTAINER ================= */
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= SIDEBAR ================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 270px;
+            height: 100vh;
+
+            background: #ffffff;
+            border-right: 1px solid #dddddd;
+
+            padding: 25px 10px;
+
+            overflow-y: auto;
+
+            z-index: 1000;
+        }
+
+        /* LOGO */
+
+        .logo {
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+
+            padding-left: 15px;
+
+            color: var(--primary);
+
+            font-size: 24px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 20px;
+        }
+
+        /* SIDEBAR LIST */
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 7px;
+        }
+
+        /* SIDEBAR LINKS */
+
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            min-height: 50px;
+
+            padding: 12px 18px;
+
+            color: #222;
+
+            text-decoration: none;
+
+            font-size: 17px;
+
+            border-radius: 9px;
+
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a i {
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 19px;
+        }
+
+        /* HOVER */
+
+        .sidebar ul li a:hover {
+            background: #fff0eb;
+            color: var(--primary);
+        }
+
+        /* ACTIVE */
+
+        .sidebar ul li a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .sidebar ul li a.active:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* LOGOUT */
+
+        .logout-link {
+            margin-top: 15px;
+
+            border-top: 1px solid #eeeeee;
+
+            padding-top: 18px !important;
+
+            color: #e53935 !important;
+        }
+
+        .logout-link:hover {
+            background: #e53935 !important;
+            color: white !important;
+        }
+
+        /* ================= CONTENT ================= */
+
+        .content {
+            margin-left: 270px;
+
+            flex: 1;
+
+            min-height: 100vh;
+
+            padding: 35px 40px;
+
+            overflow-x: auto;
+        }
+
+        /* ================= TOP BAR ================= */
+
+        .top-bar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .top-bar h1 {
+            font-size: 30px;
+
+            color: #222;
+        }
+
+        .top-bar p {
+            color: #777;
+
+            margin-top: 7px;
+
+            font-size: 14px;
+        }
+
+        /* ================= SEARCH AREA ================= */
+
+        .search-area {
+            display: flex;
+
+            gap: 15px;
+
+            align-items: center;
+        }
+
+        /* SEARCH BOX */
+
+        .search-box {
+            display: flex;
+
+            align-items: center;
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            overflow: hidden;
+        }
+
+        .search-box input {
+            border: none;
+
+            outline: none;
+
+            padding: 13px;
+
+            width: 220px;
+
+            font-size: 14px;
+        }
+
+        .search-box button {
+            border: none;
+
+            background: var(--primary);
+
+            color: white;
+
+            padding: 13px 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+        .search-box button:hover {
+            background: var(--secondary);
+        }
+
+        /* STATUS SELECT */
+
+        .status-select {
+            padding: 13px;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            outline: none;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+        .status-select:focus {
+            border-color: var(--primary);
+        }
+
+        /* ================= TABLE ================= */
+
+        .table-box {
+            background: white;
+
+            border-radius: 12px;
+
+            overflow-x: auto;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        table {
+            width: 100%;
+
+            min-width: 950px;
+
+            border-collapse: collapse;
+        }
+
+        /* TABLE HEADER */
+
+        thead {
+            background: var(--primary);
+
+            color: white;
+        }
+
+        th {
+            padding: 17px;
+
+            text-align: left;
+
+            font-size: 15px;
+
+            white-space: nowrap;
+        }
+
+        /* TABLE DATA */
+
+        td {
+            padding: 18px;
+
+            border-bottom: 1px solid var(--border);
+
+            font-size: 14px;
+        }
+
+        tbody tr {
+            transition: 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #fff1eb;
+        }
+
+        /* ORDER ID */
+
+        .order-id {
+            color: var(--primary);
+
+            font-weight: bold;
+        }
+
+        /* ================= STATUS ================= */
+
+        .status {
+            font-weight: bold;
+        }
+
+        .confirmed {
+            color: green;
+        }
+
+        .preparing {
+            color: #e69500;
+        }
+
+        .ontheway {
+            color: #2196f3;
+        }
+
+        .delivered {
+            color: #008000;
+        }
+
+        /* ================= VIEW BUTTON ================= */
+
+        .view-btn {
+            color: #2196f3;
+
+            font-size: 21px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.15);
+
+            color: #1976d2;
+        }
+
+        /* ================= NO RESULT ================= */
+
+        .no-result {
+            display: none;
+
+            text-align: center;
+
+            padding: 35px;
+
+            color: #777;
+
+            font-size: 15px;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .content {
+                margin-left: 220px;
+
+                padding: 25px;
+            }
+
+            .top-bar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 20px;
+            }
+
+            .search-area {
+                width: 100%;
+
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 700px) {
+
+            .container {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                border-right: none;
+
+                border-bottom: 1px solid #ddd;
+            }
+
+            .logo {
+                justify-content: center;
+
+                padding-left: 0;
+            }
+
+            .sidebar ul {
+                display: grid;
+
+                grid-template-columns: 1fr 1fr;
+
+                gap: 5px;
+            }
+
+            .sidebar ul li {
+                margin-bottom: 0;
+            }
+
+            .content {
+                margin-left: 0;
+
+                padding: 20px;
+            }
+
+            .top-bar h1 {
+                font-size: 26px;
+            }
+
+            .search-area {
+                flex-direction: column;
+
+                align-items: stretch;
+
+                width: 100%;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .search-box input {
+                width: 100%;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 450px) {
+
+            .sidebar ul {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar ul li a {
+                font-size: 15px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            FOOD ORDERING
+        </div>
+
+
+        <ul>
+
+            <!-- 1. Dashboard -->
+
+            <li>
+
+                <a href="dashboard.html">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 2. Restaurant -->
+
+            <li>
+
+                <a href="restaurant.html">
+
+                    <i class="fa-solid fa-utensils"></i>
+
+                    <span>Restaurant</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 3. Menu Management -->
+
+            <li>
+
+                <a href="menu.html">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                    <span>Menu Management</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 4. Orders -->
+
+            <li>
+
+                <a href="orders.html" class="active">
+
+                    <i class="fa-solid fa-clipboard-list"></i>
+
+                    <span>Orders</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 5. Customers -->
+
+            <li>
+
+                <a href="customers.html">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Customers</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 6. Delivery Management -->
+
+            <li>
+
+                <a href="delivery.html">
+
+                    <i class="fa-solid fa-truck"></i>
+
+                    <span>Delivery Management</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 7. Payments -->
+
+            <li>
+
+                <a href="payments.html">
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                    <span>Payments</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 8. Report -->
+
+            <li>
+
+                <a href="report.html">
+
+                    <i class="fa-solid fa-chart-line"></i>
+
+                    <span>Report</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 9. Settings -->
+
+            <li>
+
+                <a href="settings.html">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+
+            <!-- 10. Logout -->
+
+            <li>
+
+                <a href="logout.html" class="logout-link">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =====================================================
+         CONTENT
+    ====================================================== -->
+
+    <main class="content">
+
+
+        <!-- TOP BAR -->
+
+        <div class="top-bar">
+
+            <div>
+
+                <h1>Orders</h1>
+
+                <p>
+                    Manage and track customer orders
+                </p>
+
+            </div>
+
+
+            <!-- SEARCH AREA -->
+
+            <div class="search-area">
+
+
+                <!-- SEARCH -->
+
+                <div class="search-box">
+
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search order ID...">
+
+                    <button onclick="applyFilters()">
+
+                        <i class="fa-solid fa-search"></i>
+
+                    </button>
+
+                </div>
+
+
+                <!-- STATUS FILTER -->
+
+                <select
+                    class="status-select"
+                    id="statusFilter"
+                    onchange="applyFilters()">
+
+                    <option value="All">
+                        All Status
+                    </option>
+
+                    <option value="Confirmed">
+                        Confirmed
+                    </option>
+
+                    <option value="Preparing">
+                        Preparing
+                    </option>
+
+                    <option value="On The Way">
+                        On The Way
+                    </option>
+
+                    <option value="Delivered">
+                        Delivered
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             ORDER TABLE
+        ================================================== -->
+
+        <div class="table-box">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Order ID</th>
+
+                        <th>Customer</th>
+
+                        <th>Restaurant</th>
+
+                        <th>Amount</th>
+
+                        <th>Status</th>
+
+                        <th>Date</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="ordersTable">
+
+
+                    <!-- ORDER 1 -->
+
+                    <tr>
+
+                        <td class="order-id">
+                            #ORD1256
+                        </td>
+
+                        <td>
+                            Nisha Jogal
+                        </td>
+
+                        <td>
+                            Pizza Palace
+                        </td>
+
+                        <td>
+                            $15.48
+                        </td>
+
+                        <td class="status confirmed">
+                            Confirmed
+                        </td>
+
+                        <td>
+                            12 May 2025
+                        </td>
+
+                        <td>
+
+                            <i
+                                class="fa-solid fa-eye view-btn"
+                                title="View Order"
+                                onclick="viewOrder(this)">
+                            </i>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 2 -->
+
+                    <tr>
+
+                        <td class="order-id">
+                            #ORD1255
+                        </td>
+
+                        <td>
+                            Raj Patel
+                        </td>
+
+                        <td>
+                            Burger House
+                        </td>
+
+                        <td>
+                            $21.00
+                        </td>
+
+                        <td class="status preparing">
+                            Preparing
+                        </td>
+
+                        <td>
+                            12 May 2025
+                        </td>
+
+                        <td>
+
+                            <i
+                                class="fa-solid fa-eye view-btn"
+                                title="View Order"
+                                onclick="viewOrder(this)">
+                            </i>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 3 -->
+
+                    <tr>
+
+                        <td class="order-id">
+                            #ORD1254
+                        </td>
+
+                        <td>
+                            Mehul Shah
+                        </td>
+
+                        <td>
+                            Tasty Meal
+                        </td>
+
+                        <td>
+                            $18.75
+                        </td>
+
+                        <td class="status ontheway">
+                            On The Way
+                        </td>
+
+                        <td>
+                            12 May 2025
+                        </td>
+
+                        <td>
+
+                            <i
+                                class="fa-solid fa-eye view-btn"
+                                title="View Order"
+                                onclick="viewOrder(this)">
+                            </i>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- ORDER 4 -->
+
+                    <tr>
+
+                        <td class="order-id">
+                            #ORD1253
+                        </td>
+
+                        <td>
+                            Priya Desai
+                        </td>
+
+                        <td>
+                            Cafe Aroma
+                        </td>
+
+                        <td>
+                            $12.30
+                        </td>
+
+                        <td class="status delivered">
+                            Delivered
+                        </td>
+
+                        <td>
+                            12 May 2025
+                        </td>
+
+                        <td>
+
+                            <i
+                                class="fa-solid fa-eye view-btn"
+                                title="View Order"
+                                onclick="viewOrder(this)">
+                            </i>
+
+                        </td>
+
+                    </tr>
+
+
+                </tbody>
+
+            </table>
+
+
+            <!-- NO RESULT MESSAGE -->
+
+            <div
+                class="no-result"
+                id="noResult">
+
+                <i class="fa-solid fa-box-open"
+                   style="font-size:35px;margin-bottom:10px;">
+                </i>
+
+                <br>
+
+                No orders found.
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+
+    /* =====================================================
+       APPLY SEARCH + STATUS FILTER TOGETHER
+    ====================================================== */
+
+    function applyFilters() {
+
+        let search =
+            document
+            .getElementById("searchInput")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+        let selectedStatus =
+            document
+            .getElementById("statusFilter")
+            .value;
+
+
+        let rows =
+            document.querySelectorAll("#ordersTable tr");
+
+
+        let visibleCount = 0;
+
+
+        rows.forEach(function(row) {
+
+
+            let orderID =
+                row.cells[0]
+                .innerText
+                .toLowerCase();
+
+
+            let status =
+                row.cells[4]
+                .innerText
+                .trim();
+
+
+            let searchMatch =
+                orderID.includes(search);
+
+
+            let statusMatch =
+                selectedStatus === "All" ||
+                status === selectedStatus;
+
+
+            if (searchMatch && statusMatch) {
+
+                row.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        /* NO RESULT */
+
+        if (visibleCount === 0) {
+
+            document
+                .getElementById("noResult")
+                .style.display = "block";
+
+        } else {
+
+            document
+                .getElementById("noResult")
+                .style.display = "none";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ENTER KEY SEARCH
+    ====================================================== */
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "keyup",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    applyFilters();
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       VIEW ORDER
+    ====================================================== */
+
+    function viewOrder(button) {
+
+
+        let row =
+            button.closest("tr");
+
+
+        let orderID =
+            row.cells[0].innerText;
+
+
+        let customer =
+            row.cells[1].innerText;
+
+
+        let restaurant =
+            row.cells[2].innerText;
+
+
+        let amount =
+            row.cells[3].innerText;
+
+
+        let status =
+            row.cells[4].innerText.trim();
+
+
+        let date =
+            row.cells[5].innerText;
+
+
+        alert(
+
+            "ORDER DETAILS\n\n" +
+
+            "Order ID: " +
+            orderID +
+
+            "\nCustomer: " +
+            customer +
+
+            "\nRestaurant: " +
+            restaurant +
+
+            "\nAmount: " +
+            amount +
+
+            "\nStatus: " +
+            status +
+
+            "\nDate: " +
+            date
+
+        );
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>

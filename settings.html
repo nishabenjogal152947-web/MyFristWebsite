@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings - Food Ordering</title>
+
+    <!-- Font Awesome 6.5.1 -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+
+        :root {
+            --primary: #ff6b35;
+            --secondary: #ff8c42;
+            --light: #fff5f2;
+            --white: #ffffff;
+            --dark: #222222;
+            --gray: #666666;
+            --border: #dddddd;
+            --green: #159447;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+        }
+
+        /* =========================
+           MAIN LAYOUT
+        ========================== */
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================== */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 270px;
+            height: 100vh;
+
+            background: var(--white);
+
+            border-right: 1px solid #dddddd;
+
+            padding: 25px 10px;
+
+            overflow-y: auto;
+
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+
+            padding-left: 15px;
+
+            color: var(--primary);
+
+            font-size: 24px;
+            font-weight: bold;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 7px;
+        }
+
+        .sidebar ul li a {
+            display: flex;
+            align-items: center;
+
+            gap: 18px;
+
+            min-height: 50px;
+
+            padding: 12px 18px;
+
+            color: #222;
+
+            text-decoration: none;
+
+            font-size: 17px;
+
+            border-radius: 9px;
+
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a i {
+            width: 22px;
+
+            text-align: center;
+
+            font-size: 19px;
+        }
+
+        .sidebar ul li a:hover {
+            background: #fff0eb;
+
+            color: var(--primary);
+        }
+
+        .sidebar ul li a.active {
+            background: var(--primary);
+
+            color: #ffffff;
+        }
+
+        .sidebar ul li a.active:hover {
+            background: var(--primary);
+
+            color: #ffffff;
+        }
+
+        /* =========================
+           LOGOUT
+        ========================== */
+
+        .logout-link {
+            margin-top: 15px;
+
+            border-top: 1px solid #eeeeee;
+
+            padding-top: 18px !important;
+
+            color: #e53935 !important;
+        }
+
+        .logout-link:hover {
+            background: #e53935 !important;
+
+            color: #ffffff !important;
+        }
+
+        /* =========================
+           MAIN CONTENT
+        ========================== */
+
+        .content {
+            margin-left: 270px;
+
+            min-height: 100vh;
+
+            width: calc(100% - 270px);
+
+            padding: 35px 40px;
+        }
+
+        /* =========================
+           PAGE HEADER
+        ========================== */
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-header h1 {
+            font-size: 38px;
+
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            color: var(--gray);
+
+            font-size: 16px;
+        }
+
+        /* =========================
+           SETTINGS GRID
+        ========================== */
+
+        .settings-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 25px;
+        }
+
+        /* =========================
+           SETTINGS CARD
+        ========================== */
+
+        .settings-card {
+            background: #ffffff;
+
+            border-radius: 12px;
+
+            padding: 28px;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        .settings-card.full {
+            grid-column: 1 / -1;
+        }
+
+        .card-title {
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 25px;
+
+            padding-bottom: 15px;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .card-title i {
+            color: var(--primary);
+
+            font-size: 21px;
+        }
+
+        .card-title h2 {
+            font-size: 21px;
+        }
+
+        /* =========================
+           FORM
+        ========================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            color: #444;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+
+            border: 1px solid #cccccc;
+
+            border-radius: 7px;
+
+            padding: 12px 14px;
+
+            font-size: 15px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .form-group textarea {
+            height: 100px;
+
+            resize: vertical;
+        }
+
+        /* =========================
+           TOGGLE SWITCH
+        ========================== */
+
+        .setting-row {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            padding: 15px 0;
+
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .setting-row:last-child {
+            border-bottom: none;
+        }
+
+        .setting-info h3 {
+            font-size: 16px;
+
+            margin-bottom: 5px;
+        }
+
+        .setting-info p {
+            color: #777777;
+
+            font-size: 13px;
+        }
+
+        .switch {
+            position: relative;
+
+            width: 52px;
+            height: 28px;
+
+            flex-shrink: 0;
+        }
+
+        .switch input {
+            opacity: 0;
+
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+
+            cursor: pointer;
+
+            inset: 0;
+
+            background: #cccccc;
+
+            border-radius: 30px;
+
+            transition: 0.3s;
+        }
+
+        .slider:before {
+            content: "";
+
+            position: absolute;
+
+            height: 22px;
+            width: 22px;
+
+            left: 3px;
+            bottom: 3px;
+
+            background: white;
+
+            border-radius: 50%;
+
+            transition: 0.3s;
+        }
+
+        .switch input:checked + .slider {
+            background: var(--primary);
+        }
+
+        .switch input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        .button-area {
+            display: flex;
+
+            justify-content: flex-end;
+
+            gap: 12px;
+
+            margin-top: 25px;
+        }
+
+        .btn {
+            border: none;
+
+            padding: 13px 25px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition: 0.3s;
+        }
+
+        .save-btn {
+            background: var(--primary);
+
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: var(--secondary);
+        }
+
+        .reset-btn {
+            background: #eeeeee;
+
+            color: #333333;
+        }
+
+        .reset-btn:hover {
+            background: #dddddd;
+        }
+
+        /* =========================
+           SUCCESS MESSAGE
+        ========================== */
+
+        .success-message {
+            display: none;
+
+            background: #e7f8ed;
+
+            color: var(--green);
+
+            border: 1px solid #bce8c9;
+
+            padding: 13px 18px;
+
+            border-radius: 7px;
+
+            margin-bottom: 20px;
+
+            font-size: 15px;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+
+        @media (max-width: 850px) {
+
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-card.full {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                width: 220px;
+            }
+
+            .content {
+                margin-left: 220px;
+
+                width: calc(100% - 220px);
+
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 650px) {
+
+            .container {
+                display: block;
+            }
+
+            .sidebar {
+                position: relative;
+
+                width: 100%;
+
+                height: auto;
+
+                min-height: auto;
+
+                border-right: none;
+
+                border-bottom: 1px solid #dddddd;
+            }
+
+            .content {
+                margin-left: 0;
+
+                width: 100%;
+
+                padding: 20px;
+            }
+
+            .logo {
+                justify-content: center;
+
+                padding-left: 0;
+            }
+
+            .page-header h1 {
+                font-size: 30px;
+            }
+
+            .settings-card {
+                padding: 20px;
+            }
+
+            .setting-row {
+                align-items: flex-start;
+            }
+
+            .button-area {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            FOOD ORDERING
+        </div>
+
+        <ul>
+
+            <li>
+                <a href="dashboard.html">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="restaurant.html">
+                    <i class="fa-solid fa-utensils"></i>
+                    <span>Restaurant</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="menu.html">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>Menu Management</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="orders.html">
+                    <i class="fa-solid fa-clipboard-list"></i>
+                    <span>Orders</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="customers.html">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Customers</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="delivery.html">
+                    <i class="fa-solid fa-truck"></i>
+                    <span>Delivery Management</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="payments.html">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>Payments</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="report.html">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Report</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="settings.html" class="active">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
+            </li>
+
+            <li>
+                <a href="logout.html" class="logout-link">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </li>
+
+        </ul>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="content">
+
+        <div class="page-header">
+
+            <h1>Settings</h1>
+
+            <p>
+                Manage your food ordering system settings.
+            </p>
+
+        </div>
+
+
+        <!-- SUCCESS MESSAGE -->
+
+        <div class="success-message" id="successMessage">
+
+            <i class="fa-solid fa-circle-check"></i>
+
+            Settings saved successfully!
+
+        </div>
+
+
+        <div class="settings-grid">
+
+
+            <!-- =========================
+                 GENERAL SETTINGS
+            ========================== -->
+
+            <div class="settings-card">
+
+                <div class="card-title">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                    <h2>General Settings</h2>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Website Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="websiteName"
+                        value="Food Ordering"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Admin Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="adminEmail"
+                        value="admin@foodordering.com"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="phone"
+                        value="+91 98765 43210"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Currency
+                    </label>
+
+                    <select id="currency">
+
+                        <option value="USD">
+                            USD ($)
+                        </option>
+
+                        <option value="INR">
+                            INR (₹)
+                        </option>
+
+                        <option value="EUR">
+                            EUR (€)
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 RESTAURANT SETTINGS
+            ========================== -->
+
+            <div class="settings-card">
+
+                <div class="card-title">
+
+                    <i class="fa-solid fa-utensils"></i>
+
+                    <h2>Restaurant Settings</h2>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Restaurant Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="restaurantName"
+                        value="Pizza Palace"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Restaurant Address
+                    </label>
+
+                    <textarea id="address">Ahmedabad, Gujarat, India</textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Opening Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="openingTime"
+                        value="10:00"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Closing Time
+                    </label>
+
+                    <input
+                        type="time"
+                        id="closingTime"
+                        value="22:00"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 NOTIFICATION SETTINGS
+            ========================== -->
+
+            <div class="settings-card">
+
+                <div class="card-title">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <h2>Notifications</h2>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            New Order Notification
+                        </h3>
+
+                        <p>
+                            Receive notification for new orders.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="orderNotification"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Payment Notification
+                        </h3>
+
+                        <p>
+                            Receive payment status updates.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="paymentNotification"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Delivery Notification
+                        </h3>
+
+                        <p>
+                            Receive delivery updates.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="deliveryNotification"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 SECURITY SETTINGS
+            ========================== -->
+
+            <div class="settings-card">
+
+                <div class="card-title">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h2>Security</h2>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Two-Factor Authentication
+                        </h3>
+
+                        <p>
+                            Add extra security to your account.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="twoFactor"
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Login Alerts
+                        </h3>
+
+                        <p>
+                            Get alerts when admin logs in.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="loginAlerts"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- =========================
+                 PAYMENT SETTINGS
+            ========================== -->
+
+            <div class="settings-card full">
+
+                <div class="card-title">
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                    <h2>Payment Settings</h2>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Cash on Delivery
+                        </h3>
+
+                        <p>
+                            Allow customers to pay cash on delivery.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="cod"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            UPI Payment
+                        </h3>
+
+                        <p>
+                            Allow customers to pay using UPI.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="upi"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <div class="setting-row">
+
+                    <div class="setting-info">
+
+                        <h3>
+                            Card Payment
+                        </h3>
+
+                        <p>
+                            Allow customers to pay using debit or credit cards.
+                        </p>
+
+                    </div>
+
+                    <label class="switch">
+
+                        <input
+                            type="checkbox"
+                            id="card"
+                            checked
+                        >
+
+                        <span class="slider"></span>
+
+                    </label>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="button-area">
+
+                    <button
+                        class="btn reset-btn"
+                        onclick="resetSettings()"
+                    >
+                        Reset
+                    </button>
+
+
+                    <button
+                        class="btn save-btn"
+                        onclick="saveSettings()"
+                    >
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Settings
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+    /* ================================
+       SAVE SETTINGS
+    ================================= */
+
+    function saveSettings() {
+
+        const websiteName =
+            document.getElementById("websiteName").value;
+
+        const adminEmail =
+            document.getElementById("adminEmail").value;
+
+        const phone =
+            document.getElementById("phone").value;
+
+
+        if (
+            websiteName.trim() === "" ||
+            adminEmail.trim() === "" ||
+            phone.trim() === ""
+        ) {
+
+            alert("Please fill all required fields.");
+
+            return;
+        }
+
+
+        const settings = {
+
+            websiteName:
+                websiteName,
+
+            adminEmail:
+                adminEmail,
+
+            phone:
+                phone,
+
+            currency:
+                document.getElementById("currency").value,
+
+            restaurantName:
+                document.getElementById("restaurantName").value,
+
+            address:
+                document.getElementById("address").value,
+
+            openingTime:
+                document.getElementById("openingTime").value,
+
+            closingTime:
+                document.getElementById("closingTime").value,
+
+            orderNotification:
+                document.getElementById("orderNotification").checked,
+
+            paymentNotification:
+                document.getElementById("paymentNotification").checked,
+
+            deliveryNotification:
+                document.getElementById("deliveryNotification").checked,
+
+            twoFactor:
+                document.getElementById("twoFactor").checked,
+
+            loginAlerts:
+                document.getElementById("loginAlerts").checked,
+
+            cod:
+                document.getElementById("cod").checked,
+
+            upi:
+                document.getElementById("upi").checked,
+
+            card:
+                document.getElementById("card").checked
+
+        };
+
+
+        localStorage.setItem(
+            "foodOrderingSettings",
+            JSON.stringify(settings)
+        );
+
+
+        const message =
+            document.getElementById("successMessage");
+
+
+        message.style.display = "block";
+
+
+        setTimeout(function() {
+
+            message.style.display = "none";
+
+        }, 3000);
+
+    }
+
+
+    /* ================================
+       RESET SETTINGS
+    ================================= */
+
+    function resetSettings() {
+
+        const confirmReset =
+            confirm(
+                "Are you sure you want to reset the settings?"
+            );
+
+
+        if (!confirmReset) {
+            return;
+        }
+
+
+        localStorage.removeItem(
+            "foodOrderingSettings"
+        );
+
+
+        location.reload();
+
+    }
+
+
+    /* ================================
+       LOAD SAVED SETTINGS
+    ================================= */
+
+    function loadSettings() {
+
+        const saved =
+            localStorage.getItem(
+                "foodOrderingSettings"
+            );
+
+
+        if (!saved) {
+            return;
+        }
+
+
+        const settings =
+            JSON.parse(saved);
+
+
+        if (settings.websiteName !== undefined) {
+
+            document.getElementById("websiteName").value =
+                settings.websiteName;
+
+        }
+
+
+        if (settings.adminEmail !== undefined) {
+
+            document.getElementById("adminEmail").value =
+                settings.adminEmail;
+
+        }
+
+
+        if (settings.phone !== undefined) {
+
+            document.getElementById("phone").value =
+                settings.phone;
+
+        }
+
+
+        if (settings.currency !== undefined) {
+
+            document.getElementById("currency").value =
+                settings.currency;
+
+        }
+
+
+        if (settings.restaurantName !== undefined) {
+
+            document.getElementById("restaurantName").value =
+                settings.restaurantName;
+
+        }
+
+
+        if (settings.address !== undefined) {
+
+            document.getElementById("address").value =
+                settings.address;
+
+        }
+
+
+        if (settings.openingTime !== undefined) {
+
+            document.getElementById("openingTime").value =
+                settings.openingTime;
+
+        }
+
+
+        if (settings.closingTime !== undefined) {
+
+            document.getElementById("closingTime").value =
+                settings.closingTime;
+
+        }
+
+
+        if (settings.orderNotification !== undefined) {
+
+            document.getElementById("orderNotification").checked =
+                settings.orderNotification;
+
+        }
+
+
+        if (settings.paymentNotification !== undefined) {
+
+            document.getElementById("paymentNotification").checked =
+                settings.paymentNotification;
+
+        }
+
+
+        if (settings.deliveryNotification !== undefined) {
+
+            document.getElementById("deliveryNotification").checked =
+                settings.deliveryNotification;
+
+        }
+
+
+        if (settings.twoFactor !== undefined) {
+
+            document.getElementById("twoFactor").checked =
+                settings.twoFactor;
+
+        }
+
+
+        if (settings.loginAlerts !== undefined) {
+
+            document.getElementById("loginAlerts").checked =
+                settings.loginAlerts;
+
+        }
+
+
+        if (settings.cod !== undefined) {
+
+            document.getElementById("cod").checked =
+                settings.cod;
+
+        }
+
+
+        if (settings.upi !== undefined) {
+
+            document.getElementById("upi").checked =
+                settings.upi;
+
+        }
+
+
+        if (settings.card !== undefined) {
+
+            document.getElementById("card").checked =
+                settings.card;
+
+        }
+
+    }
+
+
+    /* ================================
+       PAGE LOAD
+    ================================= */
+
+    window.onload = function() {
+
+        loadSettings();
+
+        console.log(
+            "Settings Page Loaded Successfully"
+        );
+
+    };
+
+</script>
+
+</body>
+
+</html>
